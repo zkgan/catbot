@@ -5,6 +5,6 @@
 This bot uses https://github.com/mishk0/slack-bot-api
 
 ```
-npm install slackbots
+npm install
 node catbot.js
 ```
