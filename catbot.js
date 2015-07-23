@@ -47,7 +47,15 @@ bot.on('message', function(data) {
 
 						var usernames = [];
 						(function(userIds) {
-							bot.getUsers().then(function(result) {
+                            for (var i = 0, ilen = userIds.length; i < ilen; i++) {
+									var userId = userIds[i];
+                                    usernames.push(" " + findUsername(userId));
+                            }
+                            
+                            message += usernames.sort().join('');
+                            bot.postMessage(data.channel, message, params);
+                            
+							/*bot.getUsers().then(function(result) {
 								for (var i = 0, ilen = userIds.length; i < ilen; i++) {
 									var userId = userIds[i];
 									for (var j = 0, jlen = result.members.length; j < jlen; j++) {
@@ -61,7 +69,7 @@ bot.on('message', function(data) {
 
 								message += usernames.sort().join('');
 		    					bot.postMessage(data.channel, message, params);
-							}, null);
+							}, null);*/
 						}(e.attendees));
 					}
 					else {
@@ -132,3 +140,19 @@ bot.on('message', function(data) {
 		}
 	}
 });
+
+function findUsername(UserId){
+    bot.getUsers().then(
+        function(result) {
+            var username;
+            for (var i = 0; i < result.members.length; i++) {
+                var member = result.members[i];
+                if (member.id === UserId) {
+                    username = member.name;
+                    break;
+                }
+            }
+            return username;
+        }, 
+        null);
+}
